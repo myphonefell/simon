@@ -5,15 +5,28 @@ import simon.controllers.ColourSquare;
 import java.util.Random;
 
 public class SequenceGenerator {
-
-	private ColourSquare[] squares;
+	View g=new View();
+	ColourSquare[] squares=new ColourSquare[4];
 	private final int LENGTH = 4;
 	private int level;
 	private Random rand = new Random();
+	int[] sequenceInput = {5,5,5,5};
+
 	
-	public SequenceGenerator(ColourSquare[] squares, int level) {
-		this.squares = squares;
+	public SequenceGenerator(int level,View view) {
+
 		this.level = level;
+		delay(100);
+
+		g.setLayout(new GridLayout(2,2));
+		squares[0]=new ColourSquare(Color.RED,0,this,g);
+		squares[1]=new ColourSquare(Color.YELLOW,1,this,g);
+		squares[2]=new ColourSquare(Color.BLUE,2,this,g);
+		squares[3]=new ColourSquare(Color.GREEN,3,this,g);
+		view.init();
+		view.a.add(g);
+		
+
 	}
 	
 	public int[] generateSequence() {
@@ -23,9 +36,9 @@ public class SequenceGenerator {
 			temp = this.rand.nextInt(this.LENGTH);
 			sequence[i] = temp;
 			this.squares[temp].glow();
-			delay(1000);
+			delay(500);
 			this.squares[temp].unglow();
-			delay(1000);
+			delay(500);
 		}
 		return sequence;
 	}
