@@ -10,30 +10,35 @@ public class SequenceListener extends Thread {
 	
 	public int[] generated; // generated sequence
 	private final int[] RESET = {5,5,5,5}; // reset default user input sequence arr
-	
-	public SequenceListener(ColourSquare[] squares) {
+	private int state;
+	private SequenceGenerator in;
+	public SequenceListener(ColourSquare[] squares, SequenceGenerator in,View view) {
 		this.squares = squares;
-		this.listenView = squares[0].view;
+		this.in=squares[0].in;
+		this.listenView=view;
 	}
 	
 	@Override
 	public void run() {
 		while(true) {
-			System.out.println("no change");
-			if(this.listenView.sequenceInput[3] != 5) {
-				System.out.println("4 taps detected");
-				if(Utils.areEqual(this.generated,this.listenView.sequenceInput)) {
-					System.out.println("Correct!");
+			System.out.println("");
+			if(this.in.sequenceInput[3] != 5) {
+				if(Utils.areEqual(this.generated,this.in.sequenceInput)) {
+					listenView.correctScreen();
 				}
 				else {
-					System.out.println("Incorrect");
+					listenView.endScreen();
 				}
-				this.currentThread().stop();
-				this.listenView.sequenceInput = this.RESET;
+				this.in.sequenceInput = this.RESET;
+				in.delay(500);
+				listenView.startScreen();
+				this.generated=in.generateSequence();
 			}
 			
 		}
 		
-	}	
+	}//run method
+	
 	
 }
+
